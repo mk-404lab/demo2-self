@@ -93,4 +93,23 @@ public class QuestionRepositoryTest {
 
         assertThat(questionRepository.count()).isEqualTo(1);
     }
+
+    @Test
+    @DisplayName("답글 저장-OneToMany 방식")
+    void t6() {
+        Question q1 = questionRepository.findById(2).get();
+
+        Answer a1 = new Answer();
+        a1.setContent("답글 1");
+
+        a1.setQuestion(q1);
+        answerRepository.save(a1);
+        answerRepository.flush();
+
+        Answer foundedAnswer = answerRepository.findById(1).get();
+
+        assertThat(foundedAnswer.getId()).isEqualTo(1);
+        assertThat(foundedAnswer.getContent()).isEqualTo("답글 1");
+
+    }
 }
