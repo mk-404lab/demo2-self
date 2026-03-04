@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -43,15 +44,8 @@ public class QuestionRepositoryTest {
     @Transactional
     void t2() {
         Question q1 = questionRepository.findById(1).get();
-        System.out.println(q1.getSubject());
-        System.out.println(q1.getContent());
 
-        // q1 질문에 대한 답글
-        List<Answer> answers = q1.getAnswerList();
-
-        for (Answer a : answers) {
-            System.out.println(a.getContent());
-        }
+        assertThat(q1.getSubject()).isEqualTo("sbb가 무엇인가요?");
 
     }
 
@@ -60,7 +54,20 @@ public class QuestionRepositoryTest {
         List<Question> all = this.questionRepository.findAll();
         assertEquals(2, all.size());
 
+        System.out.println(all.size());
+
         Question q = all.get(0);
         assertEquals("sbb가 무엇인가요?", q.getSubject());
+
+        System.out.println(q.getSubject());
+    }
+
+    @Test
+    void t3(){
+        Question q1 = questionRepository.findBySubject("sbb가 무엇인가요?").get();
+
+        assertThat(q1.getId()).isEqualTo(1);
+        assertThat(q1.getContent()).isEqualTo("sbb에 대해서 알고 싶습니다.");
+
     }
 }
