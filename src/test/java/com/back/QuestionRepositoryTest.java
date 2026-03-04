@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest
 @ActiveProfiles("test")
 public class QuestionRepositoryTest {
@@ -18,24 +20,24 @@ public class QuestionRepositoryTest {
     @Autowired
     private AnswerRepository answerRepository;
 
-    @Test
-    void t1() {
-        Question q1 = new Question();
-        q1.setSubject("sbb가 무엇인가요?");
-        q1.setContent("sbb에 대해서 알고 싶습니다.");
-        questionRepository.save(q1);
-
-        Answer a1 = new Answer();
-        a1.setContent("sbb는 스프링부트 게시판입니다.1");
-        a1.setQuestion(q1);
-        answerRepository.save(a1);
-
-        Answer a2 = new Answer();
-        a2.setContent("sbb는 스프링부트 게시판입니다.2");
-        a2.setQuestion(q1);
-        answerRepository.save(a2);
-
-    }
+//    @Test
+//    void t1() {
+//        Question q1 = new Question();
+//        q1.setSubject("sbb가 무엇인가요?");
+//        q1.setContent("sbb에 대해서 알고 싶습니다.");
+//        questionRepository.save(q1);
+//
+//        Answer a1 = new Answer();
+//        a1.setContent("sbb는 스프링부트 게시판입니다.1");
+//        a1.setQuestion(q1);
+//        answerRepository.save(a1);
+//
+//        Answer a2 = new Answer();
+//        a2.setContent("sbb는 스프링부트 게시판입니다.2");
+//        a2.setQuestion(q1);
+//        answerRepository.save(a2);
+//
+//    }
 
     @Test
     @Transactional
@@ -51,5 +53,14 @@ public class QuestionRepositoryTest {
             System.out.println(a.getContent());
         }
 
+    }
+
+    @Test
+    void t1(){
+        List<Question> all = this.questionRepository.findAll();
+        assertEquals(2, all.size());
+
+        Question q = all.get(0);
+        assertEquals("sbb가 무엇인가요?", q.getSubject());
     }
 }
