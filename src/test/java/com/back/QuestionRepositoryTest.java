@@ -97,14 +97,22 @@ public class QuestionRepositoryTest {
     @Test
     @DisplayName("답글 저장-OneToMany 방식")
     void t6() {
-        Question q1 = questionRepository.findById(2).get();
+        Question q1 = new Question();
+        q1.setSubject("새 질문");
 
         Answer a1 = new Answer();
         a1.setContent("답글 1");
 
-        a1.setQuestion(q1);
-        answerRepository.save(a1);
-        answerRepository.flush();
+        /*
+        새로운 Question, Answer를 각각 만들었고, Question이 가지고 있는 필드 answer에 a1 저장
+        => 질문과 답변이 한 세트로 q1 객체에 저장됨
+        q1.저장 -> flush(): DB에 즉시 반영되도록 강제로 밀어넣는 것
+        => cascade가 persist임에 따라 연결된 a1도 함께 저장됨
+         */
+
+        q1.addAnswer(a1);
+        questionRepository.save(q1);
+        questionRepository.flush();
 
         Answer foundedAnswer = answerRepository.findById(1).get();
 
